@@ -223,6 +223,25 @@
       letter-spacing: 0.08em;
     }
 
+    .contact-item {
+      cursor: pointer;
+      transition: 0.3s ease;
+      user-select: none;
+    }
+
+    .contact-item:hover {
+      background: rgba(255, 0, 0, 0.22);
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.35);
+    }
+
+    .contact-item.copied {
+      background: #ff0000;
+      color: white;
+      box-shadow: 0 0 18px red, 0 0 40px rgba(255, 0, 0, 0.85);
+      transform: scale(1.08);
+    }
+
     .grid-3,
     .grid-2 {
       display: grid;
@@ -314,8 +333,8 @@
   <main class="container">
     <section class="hero" id="home">
       <div>
-        <p class="eyebrow">Ethical Hacker • Cybersecurity Instructor •  Artificial Intelligence • AI SEO </p>
-        <h1> Hi, I'm Reyvem Johnson <span> Cajegas</span></h1>
+        <p class="eyebrow">Ethical Hacker • Cybersecurity Instructor • Artificial Intelligence • AI SEO</p>
+        <h1>Hi, I'm Reyvem Johnson <span>Cajegas</span></h1>
         <p>
           My passion for technology drives me to keep learning every day. The more I discover, the more I realize how much more there is.
         </p>
@@ -326,7 +345,7 @@
       </div>
 
       <div class="hero-image">
-        <img src="image45.png">
+        <img src="image45.png" alt="Reyvem Johnson Cajegas">
       </div>
     </section>
 
@@ -391,13 +410,17 @@
       <div class="contact-box">
         <p class="section-tag">Contact</p>
         <h2 class="section-title">Get In Touch</h2>
-        <p>
-          Contact Below
-        </p>
+        <p>Click any item below to copy it.</p>
         <div class="contact-grid" style="margin-top: 24px;">
-          <div class="contact-item">Email: reyvem.edu.1997@gmail.com </div>
-          <div class="contact-item">GitHub: https://github.com/rcajegas</div>
-          <div class="contact-item">LinkedIn: https://www.linkedin.com/in/reyvem-johnson-t-cajegas-56577a223/e</div>
+          <div class="contact-item" onclick="copyText('reyvem.edu.1997@gmail.com', this)">
+            Email: reyvem.edu.1997@gmail.com
+          </div>
+          <div class="contact-item" onclick="copyText('https://github.com/rcajegas', this)">
+            GitHub: https://github.com/rcajegas
+          </div>
+          <div class="contact-item" onclick="copyText('https://www.linkedin.com/in/reyvem-johnson-t-cajegas-56577a223/', this)">
+            LinkedIn: https://www.linkedin.com/in/reyvem-johnson-t-cajegas-56577a223/
+          </div>
         </div>
       </div>
     </section>
@@ -535,6 +558,25 @@
           </div>
         </article>
       `).join('');
+    }
+
+    function copyText(text, element) {
+      const originalText = element.innerHTML;
+
+      navigator.clipboard.writeText(text).then(() => {
+        element.innerHTML = "⚡ ACCESS GRANTED - COPIED ⚡";
+        element.classList.add("copied");
+
+        setTimeout(() => {
+          element.innerHTML = originalText;
+          element.classList.remove("copied");
+        }, 1500);
+      }).catch(() => {
+        element.innerHTML = "COPY FAILED";
+        setTimeout(() => {
+          element.innerHTML = originalText;
+        }, 1500);
+      });
     }
 
     renderCertificates();
