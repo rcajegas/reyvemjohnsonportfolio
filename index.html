@@ -82,6 +82,44 @@
       color: white;
     }
 
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 300px;
+      background: rgba(0, 0, 0, 0.96);
+      border: 1px solid rgba(255, 0, 0, 0.35);
+      border-radius: 16px;
+      box-shadow: 0 18px 35px rgba(60, 0, 0, 0.55);
+      list-style: none;
+      padding: 12px 0;
+      z-index: 2000;
+    }
+
+    .dropdown-menu li a {
+      display: block;
+      padding: 12px 18px;
+      color: #ffb1b1;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .dropdown-menu li a:hover {
+      background: rgba(255, 0, 0, 0.18);
+      color: white;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
     .hero {
       padding: 90px 0 70px;
       display: grid;
@@ -265,6 +303,13 @@
       overflow: hidden;
     }
 
+    .card:hover {
+      transform: translateY(-4px);
+      transition: 0.25s ease;
+      border-color: rgba(255, 0, 0, 0.45);
+      box-shadow: 0 24px 50px rgba(255, 0, 0, 0.18);
+    }
+
     .card img {
       width: 100%;
       height: 220px;
@@ -315,6 +360,11 @@
         justify-content: center;
       }
 
+      .dropdown-menu {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
       .about-grid {
         grid-template-columns: 1fr;
       }
@@ -326,12 +376,35 @@
   <nav class="navbar">
     <div class="container nav-inner">
       <div class="logo">R<span>SECURA</span></div>
+
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
+
         <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
+
+        <li class="dropdown">
+          <a href="#services">Services</a>
+          <ul class="dropdown-menu">
+            <li><a href="#security-operations-defend">Security Operations Defend</a></li>
+            <li><a href="#ai-seo">AI SEO</a></li>
+            <li><a href="#automation">Automation</a></li>
+            <li><a href="#vulnerability-assessments">Vulnerability Assessments</a></li>
+            <li><a href="#cybersecurity-consulting">Cybersecurity Consulting</a></li>
+            <li><a href="#cybersecurity-awareness-training">Cybersecurity Awareness Training</a></li>
+          </ul>
+        </li>
+
         <li><a href="#certificates">Certificates</a></li>
-        <li><a href="#blog">Blog</a></li>
+
+        <li class="dropdown">
+          <a href="#blog">Blog</a>
+          <ul class="dropdown-menu">
+            <li><a href="#blog-security-lab">How I Built My First Security Lab</a></li>
+            <li><a href="#blog-ctf-lessons">CTF Lessons Learned</a></li>
+            <li><a href="#blog-sql-injection">SQL Injection Notes</a></li>
+          </ul>
+        </li>
+
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
@@ -359,10 +432,11 @@
     <section id="about">
       <p class="section-tag">About</p>
       <h2 class="section-title">Who Am I</h2>
+
       <div class="about-grid">
         <div class="about-main">
           <p>
-            I am a Computer Engineer and graduated in 2024 with an Associate’s Degree in Health Science from Pasadena, California. I started my career in technical support for 2 years and then worked in healthcare for almost 7 years. After that, I moved into cybersecurity, where I worked as a Cybersecurity Teaching Assistant, Test Engineer, and later became a Cybersecurity Instructor. I teach military veterans and immigrants, and I also teach part-time for a college in Australia and a university in Pennsylvania, USA. I also created a course about Android Systems Security for an internship program. I later became an IT Security Manager, where I lead a small team and handle IT and security operations. I manage cloud systems in Azure and AWS, Microsoft 365, user accounts, Microsoft Defender, Google Workspace, ConnectWise tools, POS systems, and system migrations. I also worked at a Managed Service Provider as a Cybersecurity L2 (and L3), where I handled incident response, patching, vulnerability assessments, and penetration testing. I have experience using tools like Splunk, SentinelOne XDR, and Blumira. I also have industry certifications, join CTF challenges on TryHackMe and Hack The Box, and contribute to Telus AI. If you want to know more, feel free to reach out.
+            I am a Computer Engineer and graduated in 2024 with an Associate’s Degree in Health Science from Pasadena, California. I started my career in technical support for 2 years and then worked in healthcare for almost 7 years. After that, I moved into cybersecurity, where I worked as a Cybersecurity Teaching Assistant, Test Engineer, and later became a Cybersecurity Instructor. I teach military veterans and immigrants, and I also teach part-time for a college in Australia and a university in Pennsylvania, USA. I also created a course about Android Systems Security for an internship program. I later became an IT Security Manager, where I lead a small team and handle IT and security operations. I manage cloud systems in Azure and AWS, Microsoft 365, user accounts, Microsoft Defender, Google Workspace, ConnectWise tools, POS systems, and system migrations. I also worked at a Managed Service Provider as a Cybersecurity L2 and L3, where I handled incident response, patching, vulnerability assessments, and penetration testing. I have experience using tools like Splunk, SentinelOne XDR, and Blumira. I also have industry certifications, join CTF challenges on TryHackMe and Hack The Box, and contribute to Telus AI. If you want to know more, feel free to reach out.
           </p>
           <br>
           <p>
@@ -398,7 +472,7 @@
       <h2 class="section-title">Cybersecurity, AI SEO & Automation Services</h2>
 
       <div class="grid-2">
-        <div class="card">
+        <div class="card" id="security-operations-defend">
           <div class="card-content">
             <h3>Security Operations Defend</h3>
             <p>
@@ -407,7 +481,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="ai-seo">
           <div class="card-content">
             <h3>AI SEO</h3>
             <p>
@@ -416,7 +490,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="automation">
           <div class="card-content">
             <h3>Automation</h3>
             <p>
@@ -425,7 +499,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="vulnerability-assessments">
           <div class="card-content">
             <h3>Vulnerability Assessments</h3>
             <p>
@@ -434,7 +508,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="cybersecurity-consulting">
           <div class="card-content">
             <h3>Cybersecurity Consulting</h3>
             <p>
@@ -443,7 +517,7 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="cybersecurity-awareness-training">
           <div class="card-content">
             <h3>Cybersecurity Awareness Training</h3>
             <p>
@@ -486,13 +560,16 @@
         <p class="section-tag">Contact</p>
         <h2 class="section-title">Get In Touch</h2>
         <p>Click any item below to copy it.</p>
+
         <div class="contact-grid" style="margin-top: 24px;">
           <div class="contact-item" onclick="copyText('reyvem.edu.1997@gmail.com', this)">
             Email: reyvem.edu.1997@gmail.com
           </div>
+
           <div class="contact-item" onclick="copyText('https://github.com/rcajegas', this)">
             GitHub: https://github.com/rcajegas
           </div>
+
           <div class="contact-item" onclick="copyText('https://www.linkedin.com/in/reyvem-johnson-t-cajegas-56577a223/', this)">
             LinkedIn: https://www.linkedin.com/in/reyvem-johnson-t-cajegas-56577a223/
           </div>
@@ -576,16 +653,19 @@
 
     const posts = [
       {
+        id: "blog-security-lab",
         title: "How I Built My First Security Lab",
         date: "March 2026",
         excerpt: "A walkthrough of setting up a home lab for ethical hacking practice, note-taking, and experimentation."
       },
       {
+        id: "blog-ctf-lessons",
         title: "CTF Lessons Learned",
         date: "February 2026",
         excerpt: "Key takeaways from capture-the-flag challenges, including enumeration habits and reporting structure."
       },
       {
+        id: "blog-sql-injection",
         title: "SQL Injection Notes",
         date: "January 2026",
         excerpt: "My beginner-friendly summary of how SQL injection works, what to test, and how to think defensively."
@@ -625,7 +705,7 @@
     function renderPosts() {
       const grid = document.getElementById('blog-grid');
       grid.innerHTML = posts.map(post => `
-        <article class="card">
+        <article class="card" id="${post.id}">
           <div class="card-content">
             <p class="small-tag">${post.date}</p>
             <h3 style="margin-top: 12px;">${post.title}</h3>
