@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | Reyvem Johnson Cajegas — Nmap, Burp Suite & Password Cracking Notes</title>
+  <meta name="description" content="Hands-on cybersecurity notes from Reyvem Johnson Cajegas: how I use Nmap for network scanning, getting started with Burp Suite, and cracking passwords in the lab to teach stronger authentication.">
+  <meta name="author" content="Reyvem Johnson Cajegas">
+  <meta name="robots" content="index, follow">
+  <!-- TODO: replace with your final GitHub Pages URL -->
+  <link rel="canonical" href="https://rcajegas.github.io/blog.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Cybersecurity Blog — Nmap, Burp Suite & Password Cracking">
+  <meta property="og:description" content="Practical lab notes on Nmap network scanning, Burp Suite web testing, and password cracking for teaching stronger authentication.">
+  <meta property="og:url" content="https://rcajegas.github.io/blog.html">
+  <meta property="og:image" content="https://rcajegas.github.io/img/blog-nmap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "RSECURA Cybersecurity Blog",
+    "author": { "@type": "Person", "name": "Reyvem Johnson Cajegas" },
+    "url": "https://rcajegas.github.io/blog.html",
+    "blogPost": [
+      { "@type": "BlogPosting", "headline": "How I Use Nmap", "datePublished": "2026-09-01", "author": { "@type": "Person", "name": "Reyvem Johnson Cajegas" } },
+      { "@type": "BlogPosting", "headline": "Getting Started with Burp Suite", "datePublished": "2026-08-01", "author": { "@type": "Person", "name": "Reyvem Johnson Cajegas" } },
+      { "@type": "BlogPosting", "headline": "Cracking Passwords in the Lab", "datePublished": "2026-07-01", "author": { "@type": "Person", "name": "Reyvem Johnson Cajegas" } }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html" aria-label="RSECURA home">R<span>SECURA</span></a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#certificates">Certificates</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li class="dropdown">
+          <a href="blog.html" aria-current="page" aria-haspopup="true">Blog</a>
+          <ul class="dropdown-menu">
+            <li><a href="#nmap">How I Use Nmap</a></li>
+            <li><a href="#burp-suite">Getting Started with Burp Suite</a></li>
+            <li><a href="#password-cracking">Cracking Passwords in the Lab</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="blog-hero">
+      <p class="section-tag">Blog</p>
+      <h1 class="section-title" style="font-size: clamp(2.2rem, 5vw, 3.4rem);">Notes From the Lab</h1>
+      <p>
+        Short, practical write-ups on the tools I use and teach every week. Everything here is done against systems I own or have written permission to test — never run these against anything you don't have authorization for.
+      </p>
+    </section>
+
+    <!-- Article 1: Nmap -->
+    <article class="article" id="nmap">
+      <img src="img/blog-nmap.svg" alt="Diagram of an Nmap scan mapping live hosts and open ports across a network" width="700" height="450">
+      <div class="article-body">
+        <div class="article-meta">
+          <span class="small-tag">September 2026</span>
+          <span class="muted">Networking · Recon</span>
+        </div>
+        <h2>How I Use Nmap</h2>
+        <p>
+          Nmap is the first tool I open on almost every engagement, and it's the first one I put in front of students. Before you can defend or attack a network, you need to know what's actually on it. Nmap answers three questions in order: which hosts are alive, which ports they have open, and what's listening behind those ports.
+        </p>
+
+        <h3>Start with host discovery</h3>
+        <p>
+          I never scan blind. On a fresh subnet I run a ping sweep first so I'm only spending time on machines that respond, instead of hammering dead addresses.
+        </p>
+        <pre><code>nmap -sn 10.0.0.0/24</code></pre>
+        <p>
+          The <code>-sn</code> flag means "no port scan" — just tell me who's home. This gives me a clean list of live hosts to focus on.
+        </p>
+
+        <h3>Then scan the hosts that answered</h3>
+        <p>
+          Once I have targets, I run a service and version scan with default scripts. This is the command I use most:
+        </p>
+        <pre><code>nmap -sC -sV -oA scan 10.0.0.5</code></pre>
+        <p>
+          Breaking it down: <code>-sV</code> detects the version of each service, <code>-sC</code> runs Nmap's safe default scripts, and <code>-oA scan</code> saves the output in all three formats (normal, greppable, and XML) using the base name <code>scan</code>. That last flag matters more than people expect — I want everything on disk so I can grep it later and drop the XML into a report.
+        </p>
+
+        <div class="callout">
+          <p>Tip I give every student: always save your output. The scan you didn't record is a scan you have to run again, and on a client network you don't want to make noise twice.</p>
+        </div>
+
+        <h3>Go deeper only when it's justified</h3>
+        <p>
+          A full port scan and OS detection is loud and slow, so I reserve it for hosts that look interesting:
+        </p>
+        <pre><code>nmap -p- -sV -O -oA full 10.0.0.5</code></pre>
+        <p>
+          <code>-p-</code> scans all 65,535 ports instead of the top 1,000, and <code>-O</code> attempts OS fingerprinting. I only do this when the quick scan hinted at something worth the extra time and noise.
+        </p>
+
+        <h3>How I read the results</h3>
+        <ul>
+          <li>Open ports that shouldn't be exposed (RDP, SMB, database ports) go straight to the top of my notes.</li>
+          <li>Version numbers get checked against known vulnerabilities — an old service is a lead, not a conclusion.</li>
+          <li>Anything unexpected gets flagged for a manual look rather than trusted blindly.</li>
+        </ul>
+        <p>
+          Nmap doesn't exploit anything. It builds the map. Everything I do afterward is more accurate because I took the time to enumerate properly first.
+        </p>
+      </div>
+    </article>
+
+    <!-- Article 2: Burp Suite -->
+    <article class="article" id="burp-suite">
+      <img src="img/blog-burp.svg" alt="Diagram showing Burp Suite intercepting HTTP requests between a browser and a web server" width="700" height="450">
+      <div class="article-body">
+        <div class="article-meta">
+          <span class="small-tag">August 2026</span>
+          <span class="muted">Web Security · Tooling</span>
+        </div>
+        <h2>Getting Started with Burp Suite</h2>
+        <p>
+          If Nmap is how I understand a network, Burp Suite is how I understand a web application. The single idea that makes Burp click for people is this: your browser and the server aren't really talking in pages, they're talking in requests. Burp sits in the middle and lets you see and change every one of them.
+        </p>
+
+        <h3>Set up the proxy</h3>
+        <p>
+          Burp runs an intercepting proxy, usually on <code>127.0.0.1:8080</code>. You point your browser at it and install Burp's certificate so HTTPS traffic can be read. The cleanest way to do this is Burp's built-in Chromium browser, which is already configured — no system settings to untangle.
+        </p>
+        <p>
+          With interception on, every request pauses so you can inspect it. With it off, traffic flows normally but is still recorded in the history. New users should turn intercept <em>off</em> at first and just browse the target — then look at everything Burp quietly captured.
+        </p>
+
+        <div class="callout">
+          <p>The mindset shift: stop thinking "I clicked login." Start thinking "my browser sent a POST to /login with these parameters." Once you see the request, you can ask what happens if you change it.</p>
+        </div>
+
+        <h3>The three tabs that do most of the work</h3>
+        <ul>
+          <li><strong>Proxy</strong> — see the live request/response and edit anything before it's forwarded.</li>
+          <li><strong>Repeater</strong> — send the same request over and over with small changes. This is where you actually test ideas: change one parameter, resend, compare the response.</li>
+          <li><strong>Intruder</strong> — automate that same idea across a list of values, for things like checking many inputs or IDs.</li>
+        </ul>
+
+        <h3>A simple first exercise</h3>
+        <p>
+          On a deliberately vulnerable target like OWASP Juice Shop or DVWA, log in normally, find the request in the Proxy history, and send it to Repeater. Then change a value — an account ID, a quantity, a price field — and resend it. Watching the server accept something it shouldn't is the moment the whole tool makes sense.
+        </p>
+        <pre><code>POST /rest/user/login HTTP/1.1
+Host: lab.local
+Content-Type: application/json
+
+{"email":"test@lab.local","password":"..."}</code></pre>
+        <p>
+          Send that to Repeater, edit the JSON, resend, and read the response carefully. Burp doesn't find bugs for you — it removes everything between you and the raw conversation so <em>you</em> can.
+        </p>
+        <p>
+          One rule I repeat constantly: only ever point Burp at applications you own or are explicitly authorized to test. The lab is where you learn; someone else's site is where you get in trouble.
+        </p>
+      </div>
+    </article>
+
+    <!-- Article 3: Password cracking -->
+    <article class="article" id="password-cracking">
+      <img src="img/blog-passwords.svg" alt="Illustration comparing weak passwords cracked quickly against long passphrases that resist cracking" width="700" height="450">
+      <div class="article-body">
+        <div class="article-meta">
+          <span class="small-tag">July 2026</span>
+          <span class="muted">Authentication · Teaching</span>
+        </div>
+        <h2>Cracking Passwords in the Lab</h2>
+        <p>
+          I teach password cracking for one reason: nothing convinces people to use long passphrases and MFA faster than watching a weak password fall in seconds. Everything below is done on hashes I generate myself, in an isolated lab. The goal is understanding, not breaking into anything.
+        </p>
+
+        <h3>Why hashing matters first</h3>
+        <p>
+          Systems don't (or shouldn't) store your password. They store a hash — a one-way fingerprint of it. When you log in, the system hashes what you typed and compares. Cracking a password means guessing inputs, hashing each guess, and checking for a match. So the strength of a password comes down to how many guesses an attacker has to make.
+        </p>
+
+        <div class="callout">
+          <p>Two things make cracking hard: a password that isn't in any wordlist, and a hashing algorithm that's deliberately slow. Weak on either front and the whole thing collapses.</p>
+        </div>
+
+        <h3>The two approaches I demonstrate</h3>
+        <p>
+          A <strong>dictionary attack</strong> tries a list of likely passwords. Most real-world compromises happen here, because people reuse common ones. In a lab I run something like:
+        </p>
+        <pre><code>hashcat -m 0 -a 0 hashes.txt rockyou.txt</code></pre>
+        <p>
+          Here <code>-m 0</code> tells hashcat the hashes are MD5, and <code>-a 0</code> selects a straight wordlist attack against a classic training wordlist. Common passwords like <code>password123</code> or <code>qwerty</code> match almost instantly.
+        </p>
+        <p>
+          A <strong>brute-force attack</strong> tries every combination in a defined space. It works on short passwords and becomes hopeless as length grows:
+        </p>
+        <pre><code>hashcat -m 0 -a 3 hashes.txt ?a?a?a?a?a?a</code></pre>
+        <p>
+          Each <code>?a</code> is one position of any printable character. Add one more character and the time to exhaust the space multiplies. This is the demo that sells passphrases.
+        </p>
+
+        <h3>The lesson I want students to keep</h3>
+        <ul>
+          <li><strong>Length beats complexity.</strong> A long, memorable passphrase outlasts a short string of symbols.</li>
+          <li><strong>Uniqueness matters.</strong> A reused password is only as safe as the weakest site it's on.</li>
+          <li><strong>Defenders should hash slowly.</strong> Algorithms like bcrypt or Argon2 make each guess expensive on purpose.</li>
+          <li><strong>MFA is the backstop.</strong> Even a cracked password fails without the second factor.</li>
+        </ul>
+        <p>
+          I never target real accounts, and neither should you. Generate your own hashes, crack those, and take the lesson back to how you protect real systems.
+        </p>
+      </div>
+    </article>
+
+    <a class="back-link" href="index.html#blog">&#8592; Back to homepage</a>
+  </main>
+</body>
+</html>
